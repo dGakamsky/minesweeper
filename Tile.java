@@ -22,13 +22,6 @@ public class Tile {
         }
     }
 
-    void flagTile(){
-        if (this.hidden){
-            this.flag = true;
-            /* TODO : add visual change to it when flagged */
-        }
-
-    }
 }
 
 
