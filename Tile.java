@@ -9,7 +9,7 @@ public class Tile {
     public Tile( int x, int y){
 
         this.flag = false;
-        this.hidden = false;
+        this.hidden = true;
         this.position[0] = x;
         this.position[1] = y;
 
