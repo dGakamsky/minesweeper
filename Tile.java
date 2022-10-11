@@ -16,9 +16,11 @@ public class Tile {
     }
 
 
-    void flag(){
-        if (this.hidden){
+    void flagTile(){
+        if (this.hidden && !this.flag){
             this.flag = true;
+        } else if (this.flag){
+            this.flag = false;
         }
     }
 
