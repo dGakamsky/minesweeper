@@ -91,7 +91,6 @@ public class Grid {
             if (this.tileGrid[xCoord][yCoord].mine) {
                 this.gameOver();
             }
-            System.out.println(this.tileGrid[xCoord][yCoord].minesAdjacent);
             if (this.tileGrid[xCoord][yCoord].minesAdjacent == 0) {
                 int[] xRange = {xCoord - 1, xCoord, xCoord + 1};
                 int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
@@ -148,11 +147,57 @@ public class Grid {
     void promptPlayer(){
         Scanner scan = new Scanner(System.in);
         System.out.println("Enter the row of the tile you would like to select");
+        while (!scan.hasNextInt()) {
+                scan.next();
+                System.out.println("Please input a number");
+        }
         int x = scan.nextInt();
+        if (x==0 || x > xDimension){
+            while (x==0 || x > xDimension) {
+                System.out.println("Please enter a number within bounds (bounds are: 1 - " + xDimension);
+                System.out.println("Enter the row of the tile you would like to select");
+                while (!scan.hasNextInt()) {
+                    scan.next();
+                    System.out.println("Please input a number");
+                }
+                x = scan.nextInt();
+            }
+        }
         System.out.println("Enter the column of the tile you would like to select");
+        while (!scan.hasNextInt()) {
+            scan.next();
+            System.out.println("Please input a number");
+        }
         int y = scan.nextInt();
+        if (y==0 || y > yDimension){
+            while (y==0 || y > yDimension) {
+                System.out.println("Please enter a number within bounds (bounds are: 1 - " + yDimension);
+                System.out.println("Enter the column of the tile you would like to select");
+                while (!scan.hasNextInt()) {
+                    scan.next();
+                    System.out.println("Please input a number");
+                }
+                y = scan.nextInt();
+            }
+        }
         System.out.println("would you like to flag the tile (1) or reveal it (2)");
+        while (!scan.hasNextInt()) {
+            scan.next();
+            System.out.println("Please input a number");
+        }
         int option = scan.nextInt();
+        if (!(option == 1 || option ==2)){
+            while (!(option == 1 || option ==2)){
+                System.out.println("Please enter one of the two options");
+                System.out.println("would you like to flag the tile (1) or reveal it (2)");
+                while (!scan.hasNextInt()) {
+                    scan.next();
+                    System.out.println("Please input a number");
+                }
+                option = scan.nextInt();
+            }
+
+        }
         switch (option){
             case 1:
                 if (this.tileGrid[x-1][y-1].flag){
@@ -193,7 +238,6 @@ public class Grid {
         System.out.println("You have " + this.maxFlags + " flags left");
         System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
         for (int i = 0 ; i < x ; i++) {
-            System.out.println("");
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
                     System.out.print(c.WHITE + "[ ~ ]"+c.RESET);
@@ -206,9 +250,10 @@ public class Grid {
                 } else {
                     System.out.print(c.CYAN+"[ " + tileGrid[i][j].minesAdjacent + " ]"+c.RESET);
                 }
+
             }
+            System.out.print("\n");
         }
-        System.out.println("");
         System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
     }
 
