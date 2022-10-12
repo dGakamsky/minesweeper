@@ -22,13 +22,11 @@ public class Grid {
 
     void gameOver(){
         this.gameRunning = false;
-        this.printGrid();
         System.out.println("game over");
     }
     
     void gameWin(){
         this.gameRunning = false;
-        this.printGrid();
         System.out.println("Congratulations, you win!");
     }
 
@@ -71,9 +69,10 @@ public class Grid {
     void revealTile(int xCoord, int yCoord){
         int x = xCoord;
         int y = yCoord;
-        if (this.tileGrid[x][y].hidden) {
+        if (this.tileGrid[x][y].hidden && !this.tileGrid[x][y].flag) {
             this.tileGrid[x][y].hidden = false;
             if (this.tileGrid[x][y].mine) {
+                System.out.println("you have landed on a mine");
                 this.gameOver();
             }
             if (this.tileGrid[x][y].minesAdjacent == 0) {
@@ -83,7 +82,7 @@ public class Grid {
                     if (xIterator<xDimension && xIterator>=0) {
                         for (int yIterator : yRange) {
                             if (yIterator < yDimension && yIterator >= 0) {
-                                System.out.println("revealing additional tiles");
+                                if (!this.tileGrid[xIterator][yIterator].mine)
                                     revealTile(xIterator, yIterator);
                             }
                         }
@@ -131,25 +130,27 @@ public class Grid {
         int option = scan.nextInt();
         switch (option){
             case 1:
-                if (this.maxFlags == 0){
-                    System.out.println("you have no more flags left to use");
-                } else {
+                if (this.tileGrid[x-1][y-1].flag){
+                    this.maxFlags++;
                     this.tileGrid[x-1][y-1].flagTile();
-                    if (this.tileGrid[x-1][y-1].flag){
-                        this.maxFlags--;
-                        if (this.tileGrid[x-1][y-1].mine){
-                            defusedMines++;
-                            if (defusedMines == maxMines){
-                                gameWin();
-                            }
-                        }
+                } else if (!this.tileGrid[x-1][y-1].flag) {
+                    if (this.maxFlags == 0) {
+                        System.out.println("you have no more flags left to use");
                     } else {
-                        this.maxFlags++;
+                        this.tileGrid[x - 1][y - 1].flagTile();
+                            this.maxFlags--;
+                            if (this.tileGrid[x - 1][y - 1].mine) {
+                                defusedMines++;
+                                if (defusedMines == maxMines) {
+                                    gameWin();
+                                }
+                            }
                     }
                 }
                 break;
             case 2:
                 revealTile(x-1, y-1);
+                System.out.println("tiles revealed");
                 break;
         }
     }
