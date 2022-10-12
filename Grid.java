@@ -14,48 +14,67 @@ public class Grid {
 
     Grid(int x, int y, int mines){
         this.xDimension = x;
+        System.out.println(this.xDimension);
         this.yDimension = y;
+        System.out.println(this.yDimension);
         this.maxMines = mines;
-        this.maxFlags = mines;
-        this.tileGrid = generaTileGrid(this.xDimension, this.yDimension);
+
     }
 
     void gameOver(){
         this.gameRunning = false;
+        printGrid();
         System.out.println("game over");
+        gameReset();
     }
     
     void gameWin(){
         this.gameRunning = false;
+        printGrid();
         System.out.println("Congratulations, you win!");
+        gameReset();
     }
 
-    Tile[][] generaTileGrid (int x, int y){
-        tileGrid = new Tile[x][y];
+    void gameReset(){
+        System.out.println("Play again?");
+        System.out.println("Y/N");
+        Scanner scan = new Scanner(System.in);
+        String in = scan.next().toLowerCase();
+        switch(in){
+            case "y","yes" -> startGame();
+            case "n", "no" -> endGame();
+        }
+    }
+
+    void generaTileGrid (int x, int y){
+        this.tileGrid = new Tile[x][y];
 
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
-                tileGrid[i][j] = new Tile( x, y);
+                this.tileGrid[i][j] = new Tile( i, j);
 
             }
         }
+
         populateMines(x, y);
+
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
-                tileGrid[i][j].minesAdjacent = getMines(x, y) ;
+                if (!this.tileGrid[i][j].mine) {
+                    this.tileGrid[i][j].minesAdjacent = getMines(i, j);
+                }
             }
         }
-        return tileGrid;
     }
 
     int getMines(int x, int y){
         int numberOfAdjacentMines = 0;
         int[] xRange = {x - 1, x, x + 1};
-        int[] yRange = {y-1, y, y+1};
+        int[] yRange = {y - 1, y, y + 1};
         for (int xIterator : xRange){
-            if (xIterator < xDimension && xIterator>0) {
+            if (xIterator < this.xDimension && xIterator >= 0) {
                 for (int yIterator : yRange) {
-                    if (yIterator < yDimension && yIterator > 0) {
+                    if (yIterator < this.yDimension && yIterator >= 0) {
                         if (this.tileGrid[xIterator][yIterator].mine) {
                             numberOfAdjacentMines++;
                         }
@@ -67,17 +86,15 @@ public class Grid {
     }
 
     void revealTile(int xCoord, int yCoord){
-        int x = xCoord;
-        int y = yCoord;
-        if (this.tileGrid[x][y].hidden && !this.tileGrid[x][y].flag) {
-            this.tileGrid[x][y].hidden = false;
-            if (this.tileGrid[x][y].mine) {
-                System.out.println("you have landed on a mine");
+        if (this.tileGrid[xCoord][yCoord].hidden && !this.tileGrid[xCoord][yCoord].flag) {
+            this.tileGrid[xCoord][yCoord].hidden = false;
+            if (this.tileGrid[xCoord][yCoord].mine) {
                 this.gameOver();
             }
-            if (this.tileGrid[x][y].minesAdjacent == 0) {
-                int[] xRange = {x - 1, x, x + 1};
-                int[] yRange = {y - 1, y, y + 1};
+            System.out.println(this.tileGrid[xCoord][yCoord].minesAdjacent);
+            if (this.tileGrid[xCoord][yCoord].minesAdjacent == 0) {
+                int[] xRange = {xCoord - 1, xCoord, xCoord + 1};
+                int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
                 for (int xIterator : xRange) {
                     if (xIterator<xDimension && xIterator>=0) {
                         for (int yIterator : yRange) {
@@ -99,15 +116,15 @@ public class Grid {
         while (currentMines < this.maxMines){
             int randomX = rand.nextInt(x);
             int randomY = rand.nextInt(y);
-            if (!tileGrid[randomX][randomY].mine){
-                tileGrid[randomX][randomY].mine = true;
+            if (!this.tileGrid[randomX][randomY].mine){
+                this.tileGrid[randomX][randomY].mine = true;
                 currentMines++;
             }
         }
     }
 
     void update(){
-        while (gameRunning) {
+        while (this.gameRunning) {
             promptPlayer();
             printGrid();
         }
@@ -115,9 +132,17 @@ public class Grid {
 
     void startGame(){
         this.gameRunning = true;
+        this.defusedMines = 0;
+        this.maxFlags = this.maxMines;
+        generaTileGrid(this.xDimension, this.yDimension);
         System.out.println("Welcome to minesweeper");
         printGrid();
         update();
+    }
+
+    void endGame(){
+        System.out.println("Thanks for playing!");
+        System.exit(0);
     }
 
     void promptPlayer(){
@@ -133,11 +158,15 @@ public class Grid {
                 if (this.tileGrid[x-1][y-1].flag){
                     this.maxFlags++;
                     this.tileGrid[x-1][y-1].flagTile();
-                } else if (!this.tileGrid[x-1][y-1].flag) {
+                    if (this.tileGrid[x - 1][y - 1].mine) {
+                        defusedMines--;
+                    }
+                } else {
                     if (this.maxFlags == 0) {
                         System.out.println("you have no more flags left to use");
-                    } else {
+                    } else if (this.tileGrid[x - 1][y - 1].hidden) {
                         this.tileGrid[x - 1][y - 1].flagTile();
+                        if (this.tileGrid[x - 1][y - 1].flag) {
                             this.maxFlags--;
                             if (this.tileGrid[x - 1][y - 1].mine) {
                                 defusedMines++;
@@ -145,7 +174,8 @@ public class Grid {
                                     gameWin();
                                 }
                             }
-                    }
+
+                        }                    }
                 }
                 break;
             case 2:
@@ -156,27 +186,30 @@ public class Grid {
     }
 
     void printGrid(){
+        Color c = new Color();
         int x = this.xDimension;
         int y = this.yDimension;
         System.out.println("This is the grid");
         System.out.println("You have " + this.maxFlags + " flags left");
-        System.out.println("[--------------------------------------------------------]");
+        System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
         for (int i = 0 ; i < x ; i++) {
             System.out.println("");
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
-                    System.out.print("[ ~ ]");
+                    System.out.print(c.WHITE + "[ ~ ]"+c.RESET);
                 } else if (tileGrid[i][j].flag) {
-                    System.out.print("[ F ]");
+                    System.out.print(c.GREEN+"[ F ]"+c.RESET);
                 }else if (tileGrid[i][j].mine){
-                    System.out.print("[ X ]");
+                    System.out.print(c.RED+"[ X ]"+c.RESET);
+                } else if (tileGrid[i][j].minesAdjacent == 0) {
+                    System.out.print(c.BLACK+"[ " + tileGrid[i][j].minesAdjacent + " ]"+c.RESET);
                 } else {
-                    System.out.print("[ " + getMines( i, j) + " ]");
+                    System.out.print(c.CYAN+"[ " + tileGrid[i][j].minesAdjacent + " ]"+c.RESET);
                 }
             }
         }
         System.out.println("");
-        System.out.println("[-------------------------------------------------------]");
+        System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
     }
 
 
