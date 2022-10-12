@@ -35,6 +35,7 @@ public class Grid {
         gameReset();
     }
 
+
     void gameReset(){
         System.out.println("Play again?");
         System.out.println("Y/N");
