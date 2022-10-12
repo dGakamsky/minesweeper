@@ -180,26 +180,24 @@ public class Grid {
                 y = scan.nextInt();
             }
         }
-        System.out.println("would you like to flag the tile (1) or reveal it (2)");
-        while (!scan.hasNextInt()) {
+        System.out.println("would you like to flag the tile (F) or reveal it (R)");
+        while (!scan.hasNext()) {
             scan.next();
             System.out.println("Please input a number");
         }
-        int option = scan.nextInt();
-        if (!(option == 1 || option ==2)){
-            while (!(option == 1 || option ==2)){
-                System.out.println("Please enter one of the two options");
-                System.out.println("would you like to flag the tile (1) or reveal it (2)");
-                while (!scan.hasNextInt()) {
+        String option = scan.next().toLowerCase();
+        while (!(option.equals("f") || option.equals("r"))){
+            System.out.println("Please enter one of the two options");
+            System.out.println("would you like to flag the tile (F) or reveal it (R)");
+                while (!scan.hasNext()) {
                     scan.next();
                     System.out.println("Please input a number");
                 }
-                option = scan.nextInt();
-            }
+                option = scan.next();
 
         }
         switch (option){
-            case 1:
+            case "f":
                 if (this.tileGrid[x-1][y-1].flag){
                     this.maxFlags++;
                     this.tileGrid[x-1][y-1].flagTile();
@@ -223,7 +221,7 @@ public class Grid {
                         }                    }
                 }
                 break;
-            case 2:
+            case "r":
                 revealTile(x-1, y-1);
                 System.out.println("tiles revealed");
                 break;
@@ -236,25 +234,49 @@ public class Grid {
         int y = this.yDimension;
         System.out.println("This is the grid");
         System.out.println("You have " + this.maxFlags + " flags left");
-        System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
+        System.out.print(c.PURPLE + "[------");
+        for (int j = 0; j < y ; j++){
+            System.out.print("-------");
+        }
+        System.out.print("------]");
+        System.out.print("\n"+c.RESET);
+        System.out.print("       ");
+        for (int j = 0; j < y ; j++){
+            if (j > 8){
+                System.out.print("["+c.PURPLE+" 0" + (j + 1) + " "+c.RESET+"]");
+            } else {
+                System.out.print("["+c.PURPLE+" 00" + (j + 1) + " "+c.RESET+"]");
+            }
+        }
+        System.out.print("\n");
         for (int i = 0 ; i < x ; i++) {
+            if (i > 8){
+                System.out.print("["+c.PURPLE+" 0" + (i + 1) + " "+c.RESET+"]");
+            } else {
+                System.out.print("["+c.PURPLE+" 00" + (i + 1) + " "+c.RESET+"]");
+            }
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
-                    System.out.print(c.WHITE + "[ ~ ]"+c.RESET);
+                    System.out.print(c.WHITE + "[  ?  ]"+c.RESET);
                 } else if (tileGrid[i][j].flag) {
-                    System.out.print(c.GREEN+"[ F ]"+c.RESET);
+                    System.out.print(c.GREEN+"[  F  ]"+c.RESET);
                 }else if (tileGrid[i][j].mine){
-                    System.out.print(c.RED+"[ X ]"+c.RESET);
+                    System.out.print(c.RED+"[  X  ]"+c.RESET);
                 } else if (tileGrid[i][j].minesAdjacent == 0) {
-                    System.out.print(c.BLACK+"[ " + tileGrid[i][j].minesAdjacent + " ]"+c.RESET);
+                    System.out.print(c.BLACK+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
                 } else {
-                    System.out.print(c.CYAN+"[ " + tileGrid[i][j].minesAdjacent + " ]"+c.RESET);
+                    System.out.print(c.CYAN+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
                 }
 
             }
             System.out.print("\n");
         }
-        System.out.println(c.WHITE + "[-------------------------------------------------------]" + c.RESET);
+        System.out.print(c.PURPLE + "[------");
+        for (int j = 0; j < y ; j++){
+            System.out.print("-------");
+        }
+        System.out.print("------]");
+        System.out.print("\n"+c.RESET);
     }
 
 

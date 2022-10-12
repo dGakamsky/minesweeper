@@ -58,7 +58,7 @@ public class Main {
                 inputs[2] = scan.nextInt();
         }
 
-        if ((inputs[2]>(inputs[1]*inputs[0]/4))){
+        if ((inputs[2]>(inputs[1]*inputs[0]/2))){
             System.out.println("That is a very high number of bombs to place, are you sure about that?");
             System.out.println("please enter the number of mines again to confirm");
             while (!scan.hasNextInt()) {
