@@ -9,6 +9,7 @@ public class Grid {
     int defusedMines;
     int maxFlags;
     SecureRandom rand = new SecureRandom();
+    Scanner scan = new Scanner(System.in);
 
 
     boolean gameRunning;
@@ -104,11 +105,7 @@ public class Grid {
     }
 
     boolean inBounds (int x, int y){
-        if (x<this.xDimension && x>=0 && y < this.yDimension && y>= 0){
-            return true;
-        } else {
-            return false;
-        }
+        return (x < this.xDimension && x >= 0 && y < this.yDimension && y >= 0);
     }
 
     void revealTile(int xCoord, int yCoord){
@@ -148,11 +145,46 @@ public class Grid {
 
 
     void promptPlayer(){
-        Scanner scan = new Scanner(System.in);
+        int xSelected = prompt_xSelect();
+        int ySelected = prompt_ySelect();
+        String optionSelected = prompt_optionSelect();
+        switch (optionSelected){
+            case "f" -> flagTile(xSelected-1, ySelected-1);
+            case "r" -> revealTile(xSelected-1, ySelected-1);
+
+        }
+    }
+
+    void flagTile(int xSelected, int ySelected){
+        if (this.tileGrid[xSelected][ySelected].flag){
+            this.maxFlags++;
+            this.tileGrid[xSelected][ySelected].flagTile();
+            if (this.tileGrid[xSelected][ySelected].mine) {
+                defusedMines--;
+            }
+        } else {
+            if (this.maxFlags == 0) {
+                System.out.println("you have no more flags left to use");
+            } else if (this.tileGrid[xSelected][ySelected].hidden) {
+                this.tileGrid[xSelected][ySelected].flagTile();
+                if (this.tileGrid[xSelected][ySelected].flag) {
+                    this.maxFlags--;
+                    if (this.tileGrid[xSelected][ySelected].mine) {
+                        defusedMines++;
+                        if (defusedMines == maxMines) {
+                            gameWin();
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    int prompt_xSelect(){
         System.out.println("Enter the row of the tile you would like to select");
         while (!scan.hasNextInt()) {
-                scan.next();
-                System.out.println("Please input a number");
+            scan.next();
+            System.out.println(Message.errorMsg);
         }
         int x = scan.nextInt();
         if (x==0 || x > xDimension){
@@ -161,15 +193,20 @@ public class Grid {
                 System.out.println("Enter the row of the tile you would like to select");
                 while (!scan.hasNextInt()) {
                     scan.next();
-                    System.out.println("Please input a number");
+                    System.out.println(Message.errorMsg);
                 }
                 x = scan.nextInt();
             }
         }
+
+        return x;
+    }
+
+    int prompt_ySelect(){
         System.out.println("Enter the column of the tile you would like to select");
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.println("Please input a number");
+            System.out.println(Message.errorMsg);
         }
         int y = scan.nextInt();
         if (y==0 || y > yDimension){
@@ -178,57 +215,32 @@ public class Grid {
                 System.out.println("Enter the column of the tile you would like to select");
                 while (!scan.hasNextInt()) {
                     scan.next();
-                    System.out.println("Please input a number");
+                    System.out.println(Message.errorMsg);
                 }
                 y = scan.nextInt();
             }
         }
+        return y;
+    }
+
+    String prompt_optionSelect(){
         System.out.println("would you like to flag the tile (F) or reveal it (R)");
         while (!scan.hasNext()) {
             scan.next();
-            System.out.println("Please input a number");
+            System.out.println(Message.errorMsg);
         }
         String option = scan.next().toLowerCase();
         while (!(option.equals("f") || option.equals("r"))){
             System.out.println("Please enter one of the two options");
             System.out.println("would you like to flag the tile (F) or reveal it (R)");
-                while (!scan.hasNext()) {
-                    scan.next();
-                    System.out.println("Please input a number");
-                }
-                option = scan.next();
+            while (!scan.hasNext()) {
+                scan.next();
+                System.out.println(Message.errorMsg);
+            }
+            option = scan.next();
 
         }
-        switch (option){
-            case "f":
-                if (this.tileGrid[x-1][y-1].flag){
-                    this.maxFlags++;
-                    this.tileGrid[x-1][y-1].flagTile();
-                    if (this.tileGrid[x - 1][y - 1].mine) {
-                        defusedMines--;
-                    }
-                } else {
-                    if (this.maxFlags == 0) {
-                        System.out.println("you have no more flags left to use");
-                    } else if (this.tileGrid[x - 1][y - 1].hidden) {
-                        this.tileGrid[x - 1][y - 1].flagTile();
-                        if (this.tileGrid[x - 1][y - 1].flag) {
-                            this.maxFlags--;
-                            if (this.tileGrid[x - 1][y - 1].mine) {
-                                defusedMines++;
-                                if (defusedMines == maxMines) {
-                                    gameWin();
-                                }
-                            }
-
-                        }                    }
-                }
-                break;
-            case "r":
-                revealTile(x-1, y-1);
-                System.out.println("tiles revealed");
-                break;
-        }
+        return option;
     }
 
     void printGrid(){

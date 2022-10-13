@@ -8,8 +8,6 @@ public class Main {
     }
 
     static int[] getInputs(){
-        String errorMsg = "Please input a number";
-        String confirmMsg = "please enter the number again to confirm";
         int[] inputs = new int[3];
         Scanner scan = new Scanner(System.in);
 
@@ -17,37 +15,37 @@ public class Main {
         System.out.println("Please enter the X dimensions of the desired game field");
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.println(errorMsg);
+            System.out.println(Message.errorMsg);
         }
         inputs[0] = scan.nextInt();
         if (inputs[0]<=3 || inputs[0]>30){
             System.out.println("Are you sure you would like this size? This may have an impact on your game experience");
-            System.out.println(confirmMsg);
+            System.out.println(Message.confirmMsg);
             while (!scan.hasNextInt()) {
                 scan.next();
-                System.out.println(errorMsg);
+                System.out.println(Message.errorMsg);
             }
             inputs[0] = scan.nextInt();
         }
         System.out.println("Please enter the Y dimensions of the desired game field");
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.println(errorMsg);
+            System.out.println(Message.errorMsg);
         }
         inputs[1] = scan.nextInt();
         if (inputs[1]<=3 || inputs[1]>30){
             System.out.println("Are you sure you would like this size? This may have an impact on your game experience");
-            System.out.println(confirmMsg);
+            System.out.println(Message.confirmMsg);
             while (!scan.hasNextInt()) {
                 scan.next();
-                System.out.println(errorMsg);
+                System.out.println(Message.errorMsg);
             }
             inputs[1] = scan.nextInt();
         }
         System.out.println("Please enter the number of mines you would like in game");
         while (!scan.hasNextInt()) {
             scan.next();
-            System.out.println(errorMsg);
+            System.out.println(Message.errorMsg);
         }
         inputs[2] = scan.nextInt();
         while ((inputs[2]>inputs[1]*inputs[0])){
@@ -55,17 +53,17 @@ public class Main {
                 System.out.println("please enter the number of mines");
                 while (!scan.hasNextInt()) {
                     scan.next();
-                    System.out.println(errorMsg);
+                    System.out.println(Message.errorMsg);
                 }
                 inputs[2] = scan.nextInt();
         }
 
         if ((inputs[2]>(inputs[1]*inputs[0]/2))){
             System.out.println("That is a very high number of bombs to place, are you sure about that?");
-            System.out.println(confirmMsg);
+            System.out.println(Message.confirmMsg);
             while (!scan.hasNextInt()) {
                 scan.next();
-                System.out.println(errorMsg);
+                System.out.println(Message.errorMsg);
             }
             inputs[2] = scan.nextInt();
         }
