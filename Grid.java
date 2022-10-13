@@ -21,6 +21,28 @@ public class Grid {
 
     }
 
+    void update(){
+        while (this.gameRunning) {
+            promptPlayer();
+            printGrid();
+        }
+    }
+
+    void startGame(){
+        this.gameRunning = true;
+        this.defusedMines = 0;
+        this.maxFlags = this.maxMines;
+        generaTileGrid(this.xDimension, this.yDimension);
+        System.out.println("Welcome to minesweeper");
+        printGrid();
+        update();
+    }
+
+    void endGame(){
+        System.out.println("Thanks for playing!");
+        System.exit(0);
+    }
+
     void gameOver(){
         this.gameRunning = false;
         printGrid();
@@ -49,16 +71,12 @@ public class Grid {
 
     void generaTileGrid (int x, int y){
         this.tileGrid = new Tile[x][y];
-
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
                 this.tileGrid[i][j] = new Tile( i, j);
-
             }
         }
-
         populateMines(x, y);
-
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
                 if (!this.tileGrid[i][j].mine) {
@@ -123,27 +141,7 @@ public class Grid {
         }
     }
 
-    void update(){
-        while (this.gameRunning) {
-            promptPlayer();
-            printGrid();
-        }
-    }
 
-    void startGame(){
-        this.gameRunning = true;
-        this.defusedMines = 0;
-        this.maxFlags = this.maxMines;
-        generaTileGrid(this.xDimension, this.yDimension);
-        System.out.println("Welcome to minesweeper");
-        printGrid();
-        update();
-    }
-
-    void endGame(){
-        System.out.println("Thanks for playing!");
-        System.exit(0);
-    }
 
     void promptPlayer(){
         Scanner scan = new Scanner(System.in);
@@ -259,16 +257,17 @@ public class Grid {
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
                     System.out.print(c.WHITE + "[  ?  ]"+c.RESET);
-                } else if (tileGrid[i][j].flag) {
+                } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
                     System.out.print(c.GREEN+"[  F  ]"+c.RESET);
-                }else if (tileGrid[i][j].mine){
+                } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
+                    System.out.print(c.RED+"[  F  ]"+c.RESET);
+                } else if (tileGrid[i][j].mine){
                     System.out.print(c.RED+"[  X  ]"+c.RESET);
                 } else if (tileGrid[i][j].minesAdjacent == 0) {
                     System.out.print(c.BLACK+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
                 } else {
                     System.out.print(c.CYAN+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
                 }
-
             }
             System.out.print("\n");
         }
