@@ -75,7 +75,7 @@ public class Grid {
         this.tileGrid = new Tile[x][y];
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
-                this.tileGrid[i][j] = new Tile( i, j);
+                this.tileGrid[i][j] = new Tile();
             }
         }
         populateMines(x, y);
@@ -165,7 +165,7 @@ public class Grid {
 
     void removeFlag(int xSelected, int ySelected){
         this.maxFlags++;
-        this.tileGrid[xSelected][ySelected].flagTile();
+        this.tileGrid[xSelected][ySelected].setFlag(false);
         if (this.tileGrid[xSelected][ySelected].getMine()) {
             defusedMines--;
         }
@@ -175,7 +175,7 @@ public class Grid {
         if (this.maxFlags == 0) {
             System.out.println("you have no more flags left to use");
         } else if (this.tileGrid[xSelected][ySelected].getHidden()) {
-            this.tileGrid[xSelected][ySelected].flagTile();
+            this.tileGrid[xSelected][ySelected].setFlag(true);
             if (this.tileGrid[xSelected][ySelected].getFlag()) {
                 this.maxFlags--;
                 if (this.tileGrid[xSelected][ySelected].getMine()) {

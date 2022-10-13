@@ -3,14 +3,13 @@ public class Tile {
     private boolean mine;
     private boolean hidden;
     private boolean flag;
-    private int[] position = new int[2];
 
-    public Tile( int x, int y){
+
+    public Tile(){
 
         this.flag = false;
         this.hidden = true;
-        this.position[0] = x;
-        this.position[1] = y;
+
 
     }
 
