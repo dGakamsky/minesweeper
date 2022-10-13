@@ -1,4 +1,4 @@
-import java.util.Random;
+import java.security.SecureRandom;
 import java.util.Scanner;
 
 public class Grid {
@@ -8,6 +8,7 @@ public class Grid {
     int maxMines;
     int defusedMines;
     int maxFlags;
+    SecureRandom rand = new SecureRandom();
 
 
     boolean gameRunning;
@@ -134,7 +135,6 @@ public class Grid {
 
     void populateMines(int x, int y){
         int currentMines = 0;
-        Random rand = new Random();
         while (currentMines < this.maxMines){
             int randomX = rand.nextInt(x);
             int randomY = rand.nextInt(y);
@@ -232,55 +232,54 @@ public class Grid {
     }
 
     void printGrid(){
-        Color c = new Color();
         int x = this.xDimension;
         int y = this.yDimension;
         System.out.println("This is the grid");
         System.out.println("You have " + this.maxFlags + " flags left");
-        System.out.print(c.purple + "[------");
+        System.out.print(Color.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
         }
         System.out.print("------]");
-        System.out.print("\n"+c.reset);
+        System.out.print("\n"+Color.reset);
         System.out.print("       ");
         for (int j = 0; j < y ; j++){
             if (j > 8){
-                System.out.print("["+c.purple+" 0" + (j + 1) + " "+c.reset+"]");
+                System.out.print("["+Color.purple+" 0" + (j + 1) + " "+Color.reset+"]");
             } else {
-                System.out.print("["+c.purple+" 00" + (j + 1) + " "+c.reset+"]");
+                System.out.print("["+Color.purple+" 00" + (j + 1) + " "+Color.reset+"]");
             }
         }
         System.out.print("\n");
         for (int i = 0 ; i < x ; i++) {
             if (i > 8){
-                System.out.print("["+c.purple+" 0" + (i + 1) + " "+c.reset+"]");
+                System.out.print("["+Color.purple+" 0" + (i + 1) + " "+Color.reset+"]");
             } else {
-                System.out.print("["+c.purple+" 00" + (i + 1) + " "+c.reset+"]");
+                System.out.print("["+Color.purple+" 00" + (i + 1) + " "+Color.reset+"]");
             }
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
-                    System.out.print(c.white + "[  ?  ]"+c.reset);
+                    System.out.print(Color.white + "[  ?  ]"+Color.reset);
                 } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
-                    System.out.print(c.green+"[  F  ]"+c.reset);
+                    System.out.print(Color.green+"[  F  ]"+Color.reset);
                 } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
-                    System.out.print(c.red+"[  F  ]"+c.reset);
+                    System.out.print(Color.red+"[  F  ]"+Color.reset);
                 } else if (tileGrid[i][j].mine){
-                    System.out.print(c.red+"[  X  ]"+c.reset);
+                    System.out.print(Color.red+"[  X  ]"+Color.reset);
                 } else if (tileGrid[i][j].minesAdjacent == 0) {
-                    System.out.print(c.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.reset);
+                    System.out.print(Color.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
                 } else {
-                    System.out.print(c.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.reset);
+                    System.out.print(Color.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
                 }
             }
             System.out.print("\n");
         }
-        System.out.print(c.purple + "[------");
+        System.out.print(Color.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
         }
         System.out.print("------]");
-        System.out.print("\n"+c.reset);
+        System.out.print("\n"+Color.reset);
     }
 
 
