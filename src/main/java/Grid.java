@@ -62,9 +62,10 @@ public class Grid {
         System.out.println("Play again?");
         System.out.println("Y/N");
         String in = scan.next().toLowerCase();
-        switch(in){
-            case "y","yes" -> startGame();
-            default -> endGame();
+        if (in.equals("y")||in.equals("yes")) {
+            startGame();
+        } else {
+            endGame();
         }
     }
 
