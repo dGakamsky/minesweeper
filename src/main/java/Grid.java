@@ -115,19 +115,22 @@ public class Grid {
                 this.gameOver();
             }
             if (this.tileGrid[xCoord][yCoord].minesAdjacent == 0) {
-                int[] xRange = {xCoord - 1, xCoord, xCoord + 1};
-                int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
-                for (int xIterator : xRange) {
-                        for (int yIterator : yRange) {
-                            if (inBounds(xIterator,yIterator)) {
-                                if (!this.tileGrid[xIterator][yIterator].mine)
-                                    revealTile(xIterator, yIterator);
-                            }
-                        }
+                cascadeZeroes(xCoord, yCoord);
+            }
+        }
+    }
+
+    void cascadeZeroes (int xCoord, int yCoord){
+        int[] xRange = {xCoord - 1, xCoord, xCoord + 1};
+        int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
+        for (int xIterator : xRange) {
+            for (int yIterator : yRange) {
+                if (inBounds(xIterator,yIterator)) {
+                    if (!this.tileGrid[xIterator][yIterator].mine)
+                        revealTile(xIterator, yIterator);
                 }
             }
         }
-
     }
 
     void populateMines(int x, int y){
@@ -142,8 +145,6 @@ public class Grid {
         }
     }
 
-
-
     void promptPlayer(){
         int xSelected = prompt_xSelect();
         int ySelected = prompt_ySelect();
@@ -151,29 +152,37 @@ public class Grid {
         switch (optionSelected){
             case "f" -> flagTile(xSelected-1, ySelected-1);
             case "r" -> revealTile(xSelected-1, ySelected-1);
-
+            default -> System.exit(0);
         }
     }
 
     void flagTile(int xSelected, int ySelected){
         if (this.tileGrid[xSelected][ySelected].flag){
-            this.maxFlags++;
-            this.tileGrid[xSelected][ySelected].flagTile();
-            if (this.tileGrid[xSelected][ySelected].mine) {
-                defusedMines--;
-            }
+            removeFlag(xSelected,ySelected);
         } else {
-            if (this.maxFlags == 0) {
-                System.out.println("you have no more flags left to use");
-            } else if (this.tileGrid[xSelected][ySelected].hidden) {
-                this.tileGrid[xSelected][ySelected].flagTile();
-                if (this.tileGrid[xSelected][ySelected].flag) {
-                    this.maxFlags--;
-                    if (this.tileGrid[xSelected][ySelected].mine) {
-                        defusedMines++;
-                        if (defusedMines == maxMines) {
-                            gameWin();
-                        }
+            placeFlag(xSelected,ySelected);
+        }
+    }
+
+    void removeFlag(int xSelected, int ySelected){
+        this.maxFlags++;
+        this.tileGrid[xSelected][ySelected].flagTile();
+        if (this.tileGrid[xSelected][ySelected].mine) {
+            defusedMines--;
+        }
+    }
+
+    void placeFlag(int xSelected, int ySelected){
+        if (this.maxFlags == 0) {
+            System.out.println("you have no more flags left to use");
+        } else if (this.tileGrid[xSelected][ySelected].hidden) {
+            this.tileGrid[xSelected][ySelected].flagTile();
+            if (this.tileGrid[xSelected][ySelected].flag) {
+                this.maxFlags--;
+                if (this.tileGrid[xSelected][ySelected].mine) {
+                    defusedMines++;
+                    if (defusedMines == maxMines) {
+                        gameWin();
                     }
                 }
             }
@@ -198,7 +207,6 @@ public class Grid {
                 x = scan.nextInt();
             }
         }
-
         return x;
     }
 
