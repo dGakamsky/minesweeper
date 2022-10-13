@@ -3,11 +3,11 @@ import java.util.Scanner;
 
 public class Grid {
     Tile[][] tileGrid;
-    int xDimension;
-    int yDimension;
-    int maxMines;
-    int defusedMines;
-    int maxFlags;
+    private final int xDimension;
+    private final int yDimension;
+    private final int maxMines;
+    private int defusedMines;
+    private int maxFlags;
     SecureRandom rand = new SecureRandom();
     Scanner scan = new Scanner(System.in);
 
@@ -251,14 +251,13 @@ public class Grid {
     }
 
     void printGrid(){
-        int x = this.xDimension;
         int y = this.yDimension;
         System.out.println("This is the grid");
         System.out.println("You have " + this.maxFlags + " flags left");
         printBoundary(y);
         System.out.print("       ");
         printNumberOutlineTop(y);
-        for (int i = 0 ; i < x ; i++) {
+        for (int i = 0 ; i < this.xDimension ; i++) {
             if (i > 8){
                 System.out.print("["+Color.purple+" 0" + (i + 1) + " "+Color.reset+"]");
             } else {
