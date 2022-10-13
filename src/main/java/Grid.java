@@ -125,8 +125,7 @@ public class Grid {
         int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
         for (int xIterator : xRange) {
             for (int yIterator : yRange) {
-                if (inBounds(xIterator,yIterator)) {
-                    if (!this.tileGrid[xIterator][yIterator].mine)
+                if (inBounds(xIterator,yIterator) && (!this.tileGrid[xIterator][yIterator].mine)) {
                         revealTile(xIterator, yIterator);
                 }
             }
@@ -254,14 +253,7 @@ public class Grid {
     void printGrid(){
         int x = this.xDimension;
         int y = this.yDimension;
-        System.out.println("This is the grid");
-        System.out.println("You have " + this.maxFlags + " flags left");
-        System.out.print(Color.purple + "[------");
-        for (int j = 0; j < y ; j++){
-            System.out.print("-------");
-        }
-        System.out.print("------]");
-        System.out.print("\n"+Color.reset);
+        printIntro(y);
         System.out.print("       ");
         for (int j = 0; j < y ; j++){
             if (j > 8){
@@ -278,28 +270,48 @@ public class Grid {
                 System.out.print("["+Color.purple+" 00" + (i + 1) + " "+Color.reset+"]");
             }
             for (int j = 0; j < y ; j++){
-                if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
-                    System.out.print(Color.white + "[  ?  ]"+Color.reset);
-                } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
-                    System.out.print(Color.green+"[  F  ]"+Color.reset);
-                } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
-                    System.out.print(Color.red+"[  F  ]"+Color.reset);
-                } else if (tileGrid[i][j].mine){
-                    System.out.print(Color.red+"[  X  ]"+Color.reset);
-                } else if (tileGrid[i][j].minesAdjacent == 0) {
-                    System.out.print(Color.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
-                } else {
-                    System.out.print(Color.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
-                }
+                printRowTile(i,j);
             }
             System.out.print("\n");
         }
+        printOutro(y);
+    }
+
+    void printIntro(int y){
+        System.out.println("This is the grid");
+        System.out.println("You have " + this.maxFlags + " flags left");
         System.out.print(Color.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
         }
         System.out.print("------]");
         System.out.print("\n"+Color.reset);
+    }
+
+    void printRowTile(int i, int j){
+        if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
+            System.out.print(Color.white + "[  ?  ]"+Color.reset);
+        } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
+            System.out.print(Color.green+"[  F  ]"+Color.reset);
+        } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
+            System.out.print(Color.red+"[  F  ]"+Color.reset);
+        } else if (tileGrid[i][j].mine){
+            System.out.print(Color.red+"[  X  ]"+Color.reset);
+        } else if (tileGrid[i][j].minesAdjacent == 0) {
+            System.out.print(Color.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
+        } else {
+            System.out.print(Color.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
+        }
+    }
+
+    void printOutro(int y){
+        System.out.print(Color.purple + "[------");
+        for (int j = 0; j < y ; j++){
+            System.out.print("-------");
+        }
+        System.out.print("------]");
+        System.out.print("\n"+Color.reset);
+
     }
 
 
