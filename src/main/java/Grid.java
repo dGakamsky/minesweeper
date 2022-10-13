@@ -91,17 +91,23 @@ public class Grid {
         int[] xRange = {x - 1, x, x + 1};
         int[] yRange = {y - 1, y, y + 1};
         for (int xIterator : xRange){
-            if (xIterator < this.xDimension && xIterator >= 0) {
                 for (int yIterator : yRange) {
-                    if (yIterator < this.yDimension && yIterator >= 0) {
+                    if (inBounds(xIterator,yIterator)){
                         if (this.tileGrid[xIterator][yIterator].mine) {
                             numberOfAdjacentMines++;
                         }
                     }
                 }
-            }
         }
         return numberOfAdjacentMines;
+    }
+
+    boolean inBounds (int x, int y){
+        if (x<this.xDimension && x>=0 && y < this.yDimension && y>= 0){
+            return true;
+        } else {
+            return false;
+        }
     }
 
     void revealTile(int xCoord, int yCoord){
@@ -114,14 +120,12 @@ public class Grid {
                 int[] xRange = {xCoord - 1, xCoord, xCoord + 1};
                 int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
                 for (int xIterator : xRange) {
-                    if (xIterator<xDimension && xIterator>=0) {
                         for (int yIterator : yRange) {
-                            if (yIterator < yDimension && yIterator >= 0) {
+                            if (inBounds(xIterator,yIterator)) {
                                 if (!this.tileGrid[xIterator][yIterator].mine)
                                     revealTile(xIterator, yIterator);
                             }
                         }
-                    }
                 }
             }
         }
@@ -233,50 +237,50 @@ public class Grid {
         int y = this.yDimension;
         System.out.println("This is the grid");
         System.out.println("You have " + this.maxFlags + " flags left");
-        System.out.print(c.PURPLE + "[------");
+        System.out.print(c.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
         }
         System.out.print("------]");
-        System.out.print("\n"+c.RESET);
+        System.out.print("\n"+c.reset);
         System.out.print("       ");
         for (int j = 0; j < y ; j++){
             if (j > 8){
-                System.out.print("["+c.PURPLE+" 0" + (j + 1) + " "+c.RESET+"]");
+                System.out.print("["+c.purple+" 0" + (j + 1) + " "+c.reset+"]");
             } else {
-                System.out.print("["+c.PURPLE+" 00" + (j + 1) + " "+c.RESET+"]");
+                System.out.print("["+c.purple+" 00" + (j + 1) + " "+c.reset+"]");
             }
         }
         System.out.print("\n");
         for (int i = 0 ; i < x ; i++) {
             if (i > 8){
-                System.out.print("["+c.PURPLE+" 0" + (i + 1) + " "+c.RESET+"]");
+                System.out.print("["+c.purple+" 0" + (i + 1) + " "+c.reset+"]");
             } else {
-                System.out.print("["+c.PURPLE+" 00" + (i + 1) + " "+c.RESET+"]");
+                System.out.print("["+c.purple+" 00" + (i + 1) + " "+c.reset+"]");
             }
             for (int j = 0; j < y ; j++){
                 if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
-                    System.out.print(c.WHITE + "[  ?  ]"+c.RESET);
+                    System.out.print(c.white + "[  ?  ]"+c.reset);
                 } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
-                    System.out.print(c.GREEN+"[  F  ]"+c.RESET);
+                    System.out.print(c.green+"[  F  ]"+c.reset);
                 } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
-                    System.out.print(c.RED+"[  F  ]"+c.RESET);
+                    System.out.print(c.red+"[  F  ]"+c.reset);
                 } else if (tileGrid[i][j].mine){
-                    System.out.print(c.RED+"[  X  ]"+c.RESET);
+                    System.out.print(c.red+"[  X  ]"+c.reset);
                 } else if (tileGrid[i][j].minesAdjacent == 0) {
-                    System.out.print(c.BLACK+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
+                    System.out.print(c.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.reset);
                 } else {
-                    System.out.print(c.CYAN+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.RESET);
+                    System.out.print(c.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+c.reset);
                 }
             }
             System.out.print("\n");
         }
-        System.out.print(c.PURPLE + "[------");
+        System.out.print(c.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
         }
         System.out.print("------]");
-        System.out.print("\n"+c.RESET);
+        System.out.print("\n"+c.reset);
     }
 
 
