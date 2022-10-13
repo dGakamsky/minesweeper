@@ -33,7 +33,6 @@ public class Tile {
     int getMinesAdjacent(){
         return this.minesAdjacent;
     }
-
     void setMinesAdjacent(int minesAdjacent){
         this.minesAdjacent = minesAdjacent;
     }
