@@ -6,20 +6,12 @@ public class Tile {
 
 
     public Tile(){
-
-        this.flag = false;
-        this.hidden = true;
-
+        this.setFlag(false);
+        this.setHidden(true);
+        this.setMine(false);
 
     }
 
-    void flagTile(){
-        if (this.hidden && !this.flag){
-            this.flag = true;
-        } else if (this.flag){
-            this.flag = false;
-        }
-    }
     void setFlag(boolean flag){
         this.flag = flag;
     }
