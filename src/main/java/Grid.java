@@ -63,11 +63,11 @@ public class Grid {
     void gameReset(){
         System.out.println("Play again?");
         System.out.println("Y/N");
-        Scanner scan = new Scanner(System.in);
         String in = scan.next().toLowerCase();
         switch(in){
             case "y","yes" -> startGame();
             case "n", "no" -> endGame();
+            default -> System.exit(0);
         }
     }
 
