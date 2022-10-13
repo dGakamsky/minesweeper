@@ -16,9 +16,7 @@ public class Grid {
 
     Grid(int x, int y, int mines){
         this.xDimension = x;
-        System.out.println(this.xDimension);
         this.yDimension = y;
-        System.out.println(this.yDimension);
         this.maxMines = mines;
 
     }
@@ -66,8 +64,7 @@ public class Grid {
         String in = scan.next().toLowerCase();
         switch(in){
             case "y","yes" -> startGame();
-            case "n", "no" -> endGame();
-            default -> System.exit(0);
+            default -> endGame();
         }
     }
 
