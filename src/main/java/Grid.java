@@ -81,8 +81,8 @@ public class Grid {
         populateMines(x, y);
         for (int i = 0 ; i < x ; i++) {
             for (int j = 0; j < y ; j++){
-                if (!this.tileGrid[i][j].mine) {
-                    this.tileGrid[i][j].minesAdjacent = getMines(i, j);
+                if (!this.tileGrid[i][j].getMine()) {
+                    this.tileGrid[i][j].setMinesAdjacent(getMines(i, j));
                 }
             }
         }
@@ -95,7 +95,7 @@ public class Grid {
         for (int xIterator : xRange){
                 for (int yIterator : yRange) {
                     if (inBounds(xIterator,yIterator)){
-                        if (this.tileGrid[xIterator][yIterator].mine) {
+                        if (this.tileGrid[xIterator][yIterator].getMine()) {
                             numberOfAdjacentMines++;
                         }
                     }
@@ -109,12 +109,12 @@ public class Grid {
     }
 
     void revealTile(int xCoord, int yCoord){
-        if (this.tileGrid[xCoord][yCoord].hidden && !this.tileGrid[xCoord][yCoord].flag) {
-            this.tileGrid[xCoord][yCoord].hidden = false;
-            if (this.tileGrid[xCoord][yCoord].mine) {
+        if (this.tileGrid[xCoord][yCoord].getHidden() && !this.tileGrid[xCoord][yCoord].getFlag()) {
+            this.tileGrid[xCoord][yCoord].setHidden(false);
+            if (this.tileGrid[xCoord][yCoord].getMine()) {
                 this.gameOver();
             }
-            if (this.tileGrid[xCoord][yCoord].minesAdjacent == 0) {
+            if (this.tileGrid[xCoord][yCoord].getMinesAdjacent() == 0) {
                 cascadeZeroes(xCoord, yCoord);
             }
         }
@@ -125,7 +125,7 @@ public class Grid {
         int[] yRange = {yCoord - 1, yCoord, yCoord + 1};
         for (int xIterator : xRange) {
             for (int yIterator : yRange) {
-                if (inBounds(xIterator,yIterator) && (!this.tileGrid[xIterator][yIterator].mine)) {
+                if (inBounds(xIterator,yIterator) && (!this.tileGrid[xIterator][yIterator].getMine())) {
                         revealTile(xIterator, yIterator);
                 }
             }
@@ -137,8 +137,8 @@ public class Grid {
         while (currentMines < this.maxMines){
             int randomX = rand.nextInt(x);
             int randomY = rand.nextInt(y);
-            if (!this.tileGrid[randomX][randomY].mine){
-                this.tileGrid[randomX][randomY].mine = true;
+            if (!this.tileGrid[randomX][randomY].getMine()){
+                this.tileGrid[randomX][randomY].setMine(true);
                 currentMines++;
             }
         }
@@ -156,7 +156,7 @@ public class Grid {
     }
 
     void flagTile(int xSelected, int ySelected){
-        if (this.tileGrid[xSelected][ySelected].flag){
+        if (this.tileGrid[xSelected][ySelected].getFlag()){
             removeFlag(xSelected,ySelected);
         } else {
             placeFlag(xSelected,ySelected);
@@ -166,7 +166,7 @@ public class Grid {
     void removeFlag(int xSelected, int ySelected){
         this.maxFlags++;
         this.tileGrid[xSelected][ySelected].flagTile();
-        if (this.tileGrid[xSelected][ySelected].mine) {
+        if (this.tileGrid[xSelected][ySelected].getMine()) {
             defusedMines--;
         }
     }
@@ -174,11 +174,11 @@ public class Grid {
     void placeFlag(int xSelected, int ySelected){
         if (this.maxFlags == 0) {
             System.out.println("you have no more flags left to use");
-        } else if (this.tileGrid[xSelected][ySelected].hidden) {
+        } else if (this.tileGrid[xSelected][ySelected].getHidden()) {
             this.tileGrid[xSelected][ySelected].flagTile();
-            if (this.tileGrid[xSelected][ySelected].flag) {
+            if (this.tileGrid[xSelected][ySelected].getFlag()) {
                 this.maxFlags--;
-                if (this.tileGrid[xSelected][ySelected].mine) {
+                if (this.tileGrid[xSelected][ySelected].getMine()) {
                     defusedMines++;
                     if (defusedMines == maxMines) {
                         gameWin();
@@ -253,16 +253,11 @@ public class Grid {
     void printGrid(){
         int x = this.xDimension;
         int y = this.yDimension;
-        printIntro(y);
+        System.out.println("This is the grid");
+        System.out.println("You have " + this.maxFlags + " flags left");
+        printBoundary(y);
         System.out.print("       ");
-        for (int j = 0; j < y ; j++){
-            if (j > 8){
-                System.out.print("["+Color.purple+" 0" + (j + 1) + " "+Color.reset+"]");
-            } else {
-                System.out.print("["+Color.purple+" 00" + (j + 1) + " "+Color.reset+"]");
-            }
-        }
-        System.out.print("\n");
+        printNumberOutlineTop(y);
         for (int i = 0 ; i < x ; i++) {
             if (i > 8){
                 System.out.print("["+Color.purple+" 0" + (i + 1) + " "+Color.reset+"]");
@@ -274,12 +269,22 @@ public class Grid {
             }
             System.out.print("\n");
         }
-        printOutro(y);
+        printBoundary(y);
     }
 
-    void printIntro(int y){
-        System.out.println("This is the grid");
-        System.out.println("You have " + this.maxFlags + " flags left");
+    void printNumberOutlineTop(int y){
+        for (int j = 0; j < y ; j++){
+            if (j > 8){
+                System.out.print("["+Color.purple+" 0" + (j + 1) + " "+Color.reset+"]");
+            } else {
+                System.out.print("["+Color.purple+" 00" + (j + 1) + " "+Color.reset+"]");
+            }
+        }
+        System.out.print("\n");
+    }
+
+    void printBoundary(int y){
+
         System.out.print(Color.purple + "[------");
         for (int j = 0; j < y ; j++){
             System.out.print("-------");
@@ -289,29 +294,19 @@ public class Grid {
     }
 
     void printRowTile(int i, int j){
-        if (tileGrid[i][j].hidden && gameRunning && !tileGrid[i][j].flag) {
+        if (tileGrid[i][j].getHidden() && gameRunning && !tileGrid[i][j].getFlag()) {
             System.out.print(Color.white + "[  ?  ]"+Color.reset);
-        } else if ((tileGrid[i][j].flag && gameRunning) || (tileGrid[i][j].flag && tileGrid[i][j].mine)) {
+        } else if ((tileGrid[i][j].getFlag() && gameRunning) || (tileGrid[i][j].getFlag() && tileGrid[i][j].getMine())) {
             System.out.print(Color.green+"[  F  ]"+Color.reset);
-        } else if (tileGrid[i][j].flag && !tileGrid[i][j].mine ){
+        } else if (tileGrid[i][j].getFlag() && !tileGrid[i][j].getMine() ){
             System.out.print(Color.red+"[  F  ]"+Color.reset);
-        } else if (tileGrid[i][j].mine){
+        } else if (tileGrid[i][j].getMine()){
             System.out.print(Color.red+"[  X  ]"+Color.reset);
-        } else if (tileGrid[i][j].minesAdjacent == 0) {
-            System.out.print(Color.black+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
+        } else if (tileGrid[i][j].getMinesAdjacent() == 0) {
+            System.out.print(Color.black+"[  " + tileGrid[i][j].getMinesAdjacent() + "  ]"+Color.reset);
         } else {
-            System.out.print(Color.cyan+"[  " + tileGrid[i][j].minesAdjacent + "  ]"+Color.reset);
+            System.out.print(Color.cyan+"[  " + tileGrid[i][j].getMinesAdjacent() + "  ]"+Color.reset);
         }
-    }
-
-    void printOutro(int y){
-        System.out.print(Color.purple + "[------");
-        for (int j = 0; j < y ; j++){
-            System.out.print("-------");
-        }
-        System.out.print("------]");
-        System.out.print("\n"+Color.reset);
-
     }
 
 
