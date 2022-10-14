@@ -11,6 +11,25 @@ public class Grid {
     SecureRandom rand = new SecureRandom();
     Scanner scan = new Scanner(System.in);
 
+    public int getxDimension() {
+        return xDimension;
+    }
+
+    public int getyDimension() {
+        return yDimension;
+    }
+
+    public int getDefusedMines() {
+        return defusedMines;
+    }
+
+    public int getMaxFlags() {
+        return maxFlags;
+    }
+
+    public int getMaxMines() {
+        return maxMines;
+    }
 
     boolean gameRunning;
 
@@ -18,6 +37,7 @@ public class Grid {
         this.xDimension = x;
         this.yDimension = y;
         this.maxMines = mines;
+        this.maxFlags = mines;
 
     }
 
