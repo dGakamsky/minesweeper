@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8" ?>
-<testsuite tests="8" failures="0" name="GridTest" time="0.088" errors="0" skipped="0">
+<testsuite tests="8" failures="0" name="GridTest" time="0.054" errors="0" skipped="0">
   <properties>
     <property name="java.runtime.name" value="Java(TM) SE Runtime Environment"/>
     <property name="java.vm.version" value="19+36-2238"/>
@@ -61,12 +61,12 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
-  <testcase classname="GridTest" name="GridTest.testFlags" time="0.006"/>
-  <testcase classname="GridTest" name="GridTest.testX" time="0"/>
+  <testcase classname="GridTest" name="GridTest.testFlags" time="0.009"/>
   <testcase classname="GridTest" name="GridTest.testY" time="0"/>
+  <testcase classname="GridTest" name="GridTest.testX" time="0"/>
   <testcase classname="GridTest" name="GridTest.testMines" time="0"/>
-  <testcase classname="GridTest" name="GridTest.testGridTiles" time="0.037"/>
-  <testcase classname="GridTest" name="GridTest.testTileGrid" time="0.045"/>
-  <testcase classname="GridTest" name="GridTest.testInBounds" time="0"/>
+  <testcase classname="GridTest" name="GridTest.testGridTiles" time="0.036"/>
   <testcase classname="GridTest" name="GridTest.testDefusedMines" time="0"/>
+  <testcase classname="GridTest" name="GridTest.testInBounds" time="0.002"/>
+  <testcase classname="GridTest" name="GridTest.testTileGrid" time="0.007"/>
 </testsuite>

@@ -69,8 +69,14 @@ public class GridTest {
 
     @Test
     void testFlagTile(){
-        Grid flagGrid = new Grid(1,1,1);
-        flagGrid.generaTileGrid(1,1);
+        Grid flagGrid = new Grid(5,5,2);
+        flagGrid.generaTileGrid(5,5);
+        Assertions.assertEquals(2, flagGrid.getMaxFlags(),"flags were not assigned");
+        flagGrid.flagTile(0,0);
+        Assertions.assertTrue(flagGrid.tileGrid[0][0].getFlag(),"flag was not placed");
+        Assertions.assertEquals(1, flagGrid.getMaxFlags(),"flag was not used");
+        flagGrid.flagTile(0,0);
+        Assertions.assertEquals(2, flagGrid.getMaxFlags(),"flag was not retrieved");
 
     }
 

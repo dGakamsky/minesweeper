@@ -61,12 +61,12 @@
     <property name="sun.cpu.endian" value="little"/>
     <property name="sun.cpu.isalist" value="amd64"/>
   </properties>
+  <testcase classname="TileTest" name="TileTest.testSetHidden" time="0"/>
+  <testcase classname="TileTest" name="TileTest.testGetMine" time="0"/>
   <testcase classname="TileTest" name="TileTest.testSetMine" time="0"/>
   <testcase classname="TileTest" name="TileTest.testSetFlag" time="0"/>
-  <testcase classname="TileTest" name="TileTest.testGetMine" time="0"/>
   <testcase classname="TileTest" name="TileTest.testGetHidden" time="0"/>
-  <testcase classname="TileTest" name="TileTest.testSetHidden" time="0"/>
   <testcase classname="TileTest" name="TileTest.testGetFlag" time="0"/>
-  <testcase classname="TileTest" name="TileTest.testSetMinesAdjacent" time="0"/>
   <testcase classname="TileTest" name="TileTest.testGetMinesAdjacent" time="0"/>
+  <testcase classname="TileTest" name="TileTest.testSetMinesAdjacent" time="0"/>
 </testsuite>
