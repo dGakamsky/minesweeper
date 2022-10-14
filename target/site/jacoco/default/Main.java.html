@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="en"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Main.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">TSI_MineSweeper</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">Main.java</span></div><h1>Main.java</h1><pre class="source lang-java linenums">import java.util.Scanner;
+
+<span class="nc" id="L3">public class Main {</span>
+<span class="nc" id="L4">    static Scanner scan = new Scanner(System.in);</span>
+    public static void main(String[] args) {
+<span class="nc" id="L6">        int[] inputs = getInputs();</span>
+<span class="nc" id="L7">        Grid mineSweeper = new Grid(inputs[0], inputs[1], inputs[2]);</span>
+<span class="nc" id="L8">        mineSweeper.startGame();</span>
+<span class="nc" id="L9">    }</span>
+
+    static int[] getInputs(){
+<span class="nc" id="L12">        System.out.println(&quot;Welcome to minesweeper&quot;);</span>
+<span class="nc" id="L13">        int x = prompt_xSize();</span>
+<span class="nc" id="L14">        int y = prompt_ySize();</span>
+<span class="nc" id="L15">        int mines = prompt_getMines(x,y);</span>
+<span class="nc" id="L16">        return new int[]{x, y, mines};</span>
+    }
+
+    static int prompt_xSize(){
+<span class="nc" id="L20">        System.out.println(&quot;Please enter the X dimensions of the desired game field&quot;);</span>
+<span class="nc bnc" id="L21" title="All 2 branches missed.">        while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L22">            scan.next();</span>
+<span class="nc" id="L23">            System.out.println(Message.errorMsg);</span>
+        }
+<span class="nc" id="L25">        int x = scan.nextInt();</span>
+<span class="nc bnc" id="L26" title="All 4 branches missed.">        if (x&lt;=3 || x&gt;30){</span>
+<span class="nc" id="L27">            System.out.println(&quot;Are you sure you would like this size? This may have an impact on your game experience&quot;);</span>
+<span class="nc" id="L28">            System.out.println(Message.confirmMsg);</span>
+<span class="nc bnc" id="L29" title="All 2 branches missed.">            while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L30">                scan.next();</span>
+<span class="nc" id="L31">                System.out.println(Message.errorMsg);</span>
+            }
+<span class="nc" id="L33">            x = scan.nextInt();</span>
+        }
+<span class="nc" id="L35">        return x;</span>
+    }
+
+    static int prompt_ySize(){
+<span class="nc" id="L39">        System.out.println(&quot;Please enter the Y dimensions of the desired game field&quot;);</span>
+<span class="nc bnc" id="L40" title="All 2 branches missed.">        while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L41">            scan.next();</span>
+<span class="nc" id="L42">            System.out.println(Message.errorMsg);</span>
+        }
+<span class="nc" id="L44">        int y = scan.nextInt();</span>
+<span class="nc bnc" id="L45" title="All 4 branches missed.">        if (y&lt;=3 || y&gt;30){</span>
+<span class="nc" id="L46">            System.out.println(&quot;Are you sure you would like this size? This may have an impact on your game experience&quot;);</span>
+<span class="nc" id="L47">            System.out.println(Message.confirmMsg);</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">            while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L49">                scan.next();</span>
+<span class="nc" id="L50">                System.out.println(Message.errorMsg);</span>
+            }
+<span class="nc" id="L52">            y = scan.nextInt();</span>
+        }
+<span class="nc" id="L54">        return y;</span>
+    }
+
+    static int prompt_getMines(int x, int y){
+<span class="nc" id="L58">        System.out.println(&quot;Please enter the number of mines you would like in game&quot;);</span>
+<span class="nc bnc" id="L59" title="All 2 branches missed.">        while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L60">            scan.next();</span>
+<span class="nc" id="L61">            System.out.println(Message.errorMsg);</span>
+        }
+<span class="nc" id="L63">        int mines = scan.nextInt();</span>
+<span class="nc bnc" id="L64" title="All 2 branches missed.">        while ((mines&gt;x*y)){</span>
+<span class="nc" id="L65">            System.out.println(&quot;the number of mines must be able to be placed within the created game field&quot;);</span>
+<span class="nc" id="L66">            System.out.println(&quot;please enter the number of mines&quot;);</span>
+<span class="nc bnc" id="L67" title="All 2 branches missed.">            while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L68">                scan.next();</span>
+<span class="nc" id="L69">                System.out.println(Message.errorMsg);</span>
+            }
+<span class="nc" id="L71">            mines = scan.nextInt();</span>
+        }
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        if ((mines&gt;(x*y/2))){</span>
+<span class="nc" id="L74">            System.out.println(&quot;That is a very high number of bombs to place, are you sure about that?&quot;);</span>
+<span class="nc" id="L75">            System.out.println(Message.confirmMsg);</span>
+<span class="nc bnc" id="L76" title="All 2 branches missed.">            while (!scan.hasNextInt()) {</span>
+<span class="nc" id="L77">                scan.next();</span>
+<span class="nc" id="L78">                System.out.println(Message.errorMsg);</span>
+            }
+<span class="nc" id="L80">            mines = scan.nextInt();</span>
+        }
+<span class="nc" id="L82">        return mines;</span>
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.8.202204050719</span></div></body></html>

@@ -1,50 +1,60 @@
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-class TileTest {
+public class TileTest {
 
-    Tile testTile = new Tile();
+    Tile testTile;
+
 
     @Test
-    void testGetFlag(){
+    public void testGetFlag(){
+        testTile = new Tile();
         Assertions.assertFalse(testTile.getFlag(), "the flag has not been gotten correctly");
     }
 
     @Test
-    void testSetFlag(){
+    public void testSetFlag(){
+        testTile = new Tile();
         testTile.setFlag(true);
         Assertions.assertTrue(testTile.getFlag(), "the flag has not been set correctly");
     }
 
     @Test
-    void testGetMine(){
+    public void testGetMine(){
+        testTile = new Tile();
         Assertions.assertFalse(testTile.getMine(), "the mine has not been gotten correctly");
     }
 
     @Test
-    void testSetMine(){
+    public void testSetMine(){
+        testTile = new Tile();
         testTile.setMine(true);
         Assertions.assertTrue(testTile.getMine(), "the mine has not been set correctly");
     }
 
     @Test
-    void testGetHidden(){
+    public void testGetHidden(){
+        testTile = new Tile();
         Assertions.assertTrue(testTile.getHidden(), "the 'hidden' property has not been gotten correctly");
     }
 
     @Test
-    void testSetHidden(){
+    public void testSetHidden(){
+        testTile = new Tile();
         testTile.setHidden(false);
         Assertions.assertFalse(testTile.getHidden(), "the 'hidden' property has not been set correctly");
     }
 
     @Test
-    void testGetMinesAdjacent(){
+    public void testGetMinesAdjacent(){
+        testTile = new Tile();
         Assertions.assertEquals(0, testTile.getMinesAdjacent(), "the mines adjacent has not been gotten correctly");
     }
 
     @Test
-    void testSetMinesAdjacent(){
+    public void testSetMinesAdjacent(){
+        testTile = new Tile();
         testTile.setMinesAdjacent(5);
         Assertions.assertEquals(5,testTile.getMinesAdjacent(),"mines adjacent have not been set correctly");
     }
